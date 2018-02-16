@@ -48,7 +48,7 @@ function validNativeRange(range) {
     }
 
     if (!isTextNode(endContainer)) {
-        endContainer = prevNode(endContainer, 3)
+        endContainer = prevNode(endContainer, 3) || startContainer
         endOffset = endContainer.nodeValue.length
     }
 
@@ -70,6 +70,9 @@ function validNativeRange(range) {
 function validAncestor(start, end) {
     if (start === end) {
         return start
+    }
+    if (end === document.body) {
+        return end
     }
     return validAncestor(
         start.parentElement,
