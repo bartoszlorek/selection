@@ -4,7 +4,7 @@ import rangeContent from './range-content'
 import isEditable from './is-editable'
 import isTextElement from './is-text-element'
 import isTextNode from './is-text-node'
-import nodeValue from './node-value'
+import { setNodeValue, getNodeValue } from './node-value'
 
 module.exports = {
     selectionRange,
@@ -12,5 +12,6 @@ module.exports = {
     isEditable,
     isTextElement,
     isTextNode,
-    nodeValue
+    setNodeValue,
+    getNodeValue
 }
