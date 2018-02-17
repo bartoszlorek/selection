@@ -28,3 +28,14 @@ startOffset                // a Number representing where in the node the range 
 endOffset                  // a Number representing where in the node the range ends
 text                       // a String value of the node
 ```
+
+## Methods
+```
+.selectionRange([window][, document])
+.rangeContent(range)
+.isEditable(node)
+.isTextElement(node)
+.isTextNode(node)
+.setNodeValue(node, string)
+.getNodeValue(node)
+```
