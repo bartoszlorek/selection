@@ -1,9 +1,9 @@
 import rangeNodes from './range-nodes'
-import nodeValue from './node-value'
+import { getNodeValue } from './node-value'
 
 function rangeContent(range) {
     return rangeNodes(range).map((node, index, nodes) => {
-        let text = nodeValue(node),
+        let text = getNodeValue(node),
             startOffset = 0,
             endOffset = text.length
 

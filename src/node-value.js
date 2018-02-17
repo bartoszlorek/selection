@@ -1,18 +1,27 @@
 import isTextNode from './is-text-node'
 import isTextElement from './is-text-element'
 
-function nodeValue(node, value) {
+function setNodeValue(node, value) {
+    if (typeof value !== 'string') {
+        return
+    }
     if (isTextNode(node)) {
-        return typeof value === 'string'
-            ? (node.nodeValue = value)
-            : node.nodeValue
+        node.nodeValue = value
     }
     if (isTextElement(node)) {
-        return typeof value === 'string'
-            ? (node.value = value)
-            : node.value
+        node.value = value
     }
-    return ''
+    node.textContent = value
 }
 
-export default nodeValue
+function getNodeValue(node) {
+    if (isTextNode(node)) {
+        return node.nodeValue
+    }
+    if (isTextElement(node)) {
+        return node.value
+    }
+    return node.textContent
+}
+
+export { setNodeValue, getNodeValue }
