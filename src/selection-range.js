@@ -34,19 +34,22 @@ function selectionRange(_window = window, _document = document) {
     }
 
     if (selection.rangeCount > 0) {
-        return validNativeRange(selection.getRangeAt(0))
+        let range = selection.getRangeAt(0)
+        if (range.startOffset === range.endOffset) {
+            return range
+        }
+        return trimToTextNodes(range)
     }
     return null
 }
 
-function validNativeRange(range) {
+function trimToTextNodes(range) {
     let { startContainer, startOffset, endContainer, endOffset } = range
 
     if (!isTextNode(startContainer)) {
         startContainer = nextNode(startContainer, 3)
         startOffset = 0
     }
-
     if (!isTextNode(endContainer)) {
         endContainer = prevNode(endContainer, 3) || startContainer
         endOffset = endContainer.nodeValue.length
@@ -55,7 +58,7 @@ function validNativeRange(range) {
     let collapsed = startContainer === endContainer && startOffset === endOffset
 
     return {
-        commonAncestorContainer: validAncestor(
+        commonAncestorContainer: getAncestor(
             startContainer,
             endContainer
         ),
@@ -67,16 +70,13 @@ function validNativeRange(range) {
     }
 }
 
-function validAncestor(start, end) {
+function getAncestor(start, end) {
     if (start === end) {
         return start
     }
-    if (end === document.body) {
-        return end
-    }
-    return validAncestor(
-        start.parentElement,
-        end.parentElement
+    return getAncestor(
+        start.parentElement || document.body,
+        end.parentElement || document.body
     )
 }
 
