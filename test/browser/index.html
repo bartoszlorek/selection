@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>selection</title>
+    <style>
+        body { padding:24px; }
+        body, input, textarea { font-family:monospace; }
+        input, textarea { display:block; width:100%; margin:0 0 12px; padding:12px; min-height:24px; }
+        iframe { width: 100%; }
+        .wrap { margin:0 auto 24px; max-width:600px; }
+    </style>
+</head>
+<body>
+
+    <div class="wrap">
+        <h1>Standard HTML Element (via Nodes)</h1>
+        <div>This tag defines a division or a section in an HTML document.</div>
+    </div>
+
+    <div class="wrap">
+        <h1>Simple HTML input text and textarea</h1>
+        <input type="text" value="The value attribute specifies the value of an <input> element."/>
+        <textarea rows="4" cols="50">This tag defines a multi-line text input control.</textarea>
+    </div>
+
+    <div class="wrap">
+        <h1>Editable Content</h1>
+        <p contenteditable="true">This is a paragraph. It is editable. Try to change this text.</p>
+    </div>
+
+    <div class="wrap">
+        <h1>iframe Same-Origin</h1>
+        <iframe src="./frame.html"></iframe>
+    </div>
+
+    <div class="wrap">
+        <h1>iframe Another-Origin</h1>
+        <iframe src="https://mdn.mozillademos.org/pl/docs/Web/Guide/HTML/Editable_content$samples/How_does_it_work?revision=1332189"></iframe>
+    </div>
+
+    <script src="../../dist/selection.min.js"></script>
+    
+</body>
+</html>
