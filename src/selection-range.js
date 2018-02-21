@@ -1,14 +1,12 @@
-import { nextNode, prevNode } from './node-sibling'
-import isTextNode from './is-text-node'
+import trimToTextNodes from './.internal/trim-to-text-nodes'
+import getSelection from './.internal/get-selection'
 
 function selectionRange(_window = window, _document = document) {
-    let selection = _window.getSelection(),
-        element = _document.activeElement
-
-    if (!element) {
+    let element = _document.activeElement
+    if (element == null) {
         return null
     }
-    
+
     let tagName = element.tagName.toLowerCase()
     if (tagName === 'textarea' || tagName === 'input') {
         try {
@@ -27,57 +25,27 @@ function selectionRange(_window = window, _document = document) {
     }
 
     if (tagName === 'iframe' || tagName === 'frame') {
-        return selectionRange(
-            element.contentWindow,
-            element.contentDocument
-        )
-    }
-
-    if (selection.rangeCount > 0) {
-        let range = selection.getRangeAt(0)
-        if (range.startOffset === range.endOffset) {
-            return range
+        // prevents accessing a cross-origin frame
+        try {
+            return selectionRange(
+                element.contentWindow || element.contentDocument.defaultView,
+                element.contentDocument || element.contentWindow.document
+            )
+        } catch (e) {
+            return null
         }
-        return trimToTextNodes(range)
     }
+
+    let selection = getSelection(_window, _document)
+    if (selection && selection.rangeCount > 0) {
+        let range = selection.getRangeAt(0)
+        if (range.collapsed === false) {
+            return trimToTextNodes(range)
+        }
+        return range
+    }
+
     return null
-}
-
-function trimToTextNodes(range) {
-    let { startContainer, startOffset, endContainer, endOffset } = range
-
-    if (!isTextNode(startContainer)) {
-        startContainer = nextNode(startContainer, 3)
-        startOffset = 0
-    }
-    if (!isTextNode(endContainer)) {
-        endContainer = prevNode(endContainer, 3) || startContainer
-        endOffset = endContainer.nodeValue.length
-    }
-
-    let collapsed = startContainer === endContainer && startOffset === endOffset
-
-    return {
-        commonAncestorContainer: getAncestor(
-            startContainer,
-            endContainer
-        ),
-        collapsed,
-        startContainer,
-        startOffset,
-        endContainer,
-        endOffset
-    }
-}
-
-function getAncestor(start, end) {
-    if (start === end) {
-        return start
-    }
-    return getAncestor(
-        start.parentElement || document.body,
-        end.parentElement || document.body
-    )
 }
 
 export default selectionRange
