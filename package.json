@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ubery/selection.git"
+    "url": "git+https://github.com/bartoszlorek/selection.git"
   },
   "author": "Bartosz Lorek",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ubery/selection/issues"
+    "url": "https://github.com/bartoszlorek/selection/issues"
   },
-  "homepage": "https://github.com/ubery/selection#readme",
+  "homepage": "https://github.com/bartoszlorek/selection#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
