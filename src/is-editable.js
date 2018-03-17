@@ -1,11 +1,8 @@
-function isEditable(node) {
-    while (node) {
-        if (node.isContentEditable) {
-            return true
-        }
-        node = node.parentElement
+function isEditable(element) {
+    if (element.isContentEditable === undefined) {
+        element = element.parentElement
     }
-    return false
+    return element.isContentEditable
 }
 
 export default isEditable
