@@ -1,27 +1,35 @@
 import isTextNode from './is-text-node'
 import isTextElement from './is-text-element'
+import {
+    setNativeValue,
+    setNativeNodeValue,
+    setNativeTextContent
+} from './.internal/set-native'
 
-function setNodeValue(node, value) {
+function setValue(node, value) {
     if (typeof value !== 'string') {
-        return
-    }
-    if (isTextNode(node)) {
-        node.nodeValue = value
+        return false
     }
     if (isTextElement(node)) {
-        node.value = value
+        return setNativeValue(node, value)
     }
-    node.textContent = value
+    if (isTextNode(node)) {
+        return setNativeNodeValue(node, value)
+    }
+    return setNativeTextContent(node, value)
 }
 
-function getNodeValue(node) {
-    if (isTextNode(node)) {
-        return node.nodeValue
-    }
+function getValue(node) {
     if (isTextElement(node)) {
         return node.value
+    }
+    if (isTextNode(node)) {
+        return node.nodeValue
     }
     return node.textContent
 }
 
-export { setNodeValue, getNodeValue }
+export {
+    setValue,
+    getValue
+}
