@@ -13,7 +13,7 @@ function trimToTextNodes(range) {
         endContainer = prevNode(endContainer, 3) || startContainer
         endOffset = endContainer.nodeValue.length
     }
-
+    
     return {
         commonAncestorContainer: getAncestor(
             startContainer,
