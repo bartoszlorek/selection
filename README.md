@@ -19,9 +19,7 @@ endContainer               // the node within which the range ends
 endOffset                  // a Number representing where in the endContainer the range ends
 ```
 
-### content `Array of Objects`
-
-### item `Object`
+### content item `Object`
 
 ```javascript
 node                       // the node in the range
