@@ -1,6 +1,6 @@
 import { nextNode, prevNode } from '../node-sibling'
 import isTextNode from '../is-text-node'
-import getAncestor from './get-ancestor'
+import getCommonAncestor from './get-common-ancestor'
 
 function trimToTextNodes(range) {
     let { startContainer, startOffset, endContainer, endOffset } = range
@@ -15,12 +15,14 @@ function trimToTextNodes(range) {
     }
     
     return {
-        commonAncestorContainer: getAncestor(
+        commonAncestorContainer: getCommonAncestor(
             startContainer,
             endContainer
         ),
-        collapsed: startContainer === endContainer
-                && startOffset === endOffset,
+        collapsed: (
+            startContainer === endContainer &&
+            startOffset === endOffset
+        ),
         startContainer,
         startOffset,
         endContainer,

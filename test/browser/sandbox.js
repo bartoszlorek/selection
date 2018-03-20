@@ -1,9 +1,9 @@
-const run = () => {
-    const { selectionRange, setSelection } = selection
+function run() {
+    var range = selection.selectionRange()
+    var container = range.commonAncestorContainer
+    var result = selection.setSelection(container, 4, 50)
 
-    let range = selectionRange()
-    let container = range.commonAncestorContainer
-    let result = setSelection(container, 4, 50)
-
-    debugger
+    console.log(range)
 }
+
+setTimeout(run, 2000)

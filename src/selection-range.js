@@ -1,11 +1,11 @@
+import baseSelectionRange from './.internal/base-selection-range'
 import trimToTextNodes from './.internal/trim-to-text-nodes'
 import getWindowIframe from './.internal/get-window-iframe'
 import getDocumentIframe from './.internal/get-document-iframe'
-import getSelection from './.internal/get-selection'
 import getTagName from './.internal/get-tag-name'
 
-function selectionRange(_window = window, _document = document) {
-    let element = _document.activeElement
+function selectionRange(win = window, doc = document) {
+    let element = doc.activeElement
     if (element == null) {
         return null
     }
@@ -38,12 +38,12 @@ function selectionRange(_window = window, _document = document) {
             return null
         }
     }
+    
 
-    let selection = getSelection(_window, _document)
-    if (selection && selection.rangeCount > 0) {
-        let range = selection.getRangeAt(0)
+    let range = baseSelectionRange(win, doc)
+    if (range !== null) {
         if (range.collapsed === false) {
-            return trimToTextNodes(range)
+            range = trimToTextNodes(range)
         }
         return range
     }

@@ -1,19 +1,19 @@
-function getAncestor(start, end) {
+function getCommonAncestor(start, end) {
     if (start === end) {
         return start
     }
-    let parentStart = start.parentElement
+    let parentStart = start.parentElement || start.parentNode
     if (parentStart.contains(end)) {
         return parentStart
     }
-    let parentEnd = end.parentElement
+    let parentEnd = end.parentElement || end.parentNode
     if (parentEnd.contains(start)) {
         return parentEnd
     }
-    return getAncestor(
+    return getCommonAncestor(
         parentStart,
         parentEnd
     )
 }
 
-export default getAncestor
+export default getCommonAncestor
