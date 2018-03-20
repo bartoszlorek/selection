@@ -1,5 +1,8 @@
 import trimToTextNodes from './.internal/trim-to-text-nodes'
+import getWindowIframe from './.internal/get-window-iframe'
+import getDocumentIframe from './.internal/get-document-iframe'
 import getSelection from './.internal/get-selection'
+import getTagName from './.internal/get-tag-name'
 
 function selectionRange(_window = window, _document = document) {
     let element = _document.activeElement
@@ -7,7 +10,7 @@ function selectionRange(_window = window, _document = document) {
         return null
     }
 
-    let tagName = element.tagName.toLowerCase()
+    let tagName = getTagName(element)
     if (tagName === 'textarea' || tagName === 'input') {
         try {
             let { selectionStart, selectionEnd } = element
@@ -25,11 +28,11 @@ function selectionRange(_window = window, _document = document) {
     }
 
     if (tagName === 'iframe' || tagName === 'frame') {
-        // prevents accessing a cross-origin frame
+        // Same-origin policy
         try {
             return selectionRange(
-                element.contentWindow || element.contentDocument.defaultView,
-                element.contentDocument || element.contentWindow.document
+                getWindowIframe(element),
+                getDocumentIframe(element)
             )
         } catch (e) {
             return null
