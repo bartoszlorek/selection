@@ -1,15 +1,14 @@
 # selection
-
 ```javascript
 import { selectionRange, rangeContent } from 'selection.min'
 
 const range = selectionRange()
 const content = rangeContent(range)
 
-content.forEach(element => ...)
+content.forEach(item => ...)
 ```
 
-### Range `Object`
+### range `Object`
 
 ```javascript
 collapsed                  // Boolean indicating whether the range's start and end are the same position
@@ -20,7 +19,9 @@ endContainer               // the node within which the range ends
 endOffset                  // a Number representing where in the endContainer the range ends
 ```
 
-### Content `Array of Objects`
+### content `Array of Objects`
+
+### item `Object`
 
 ```javascript
 node                       // the node in the range
@@ -29,13 +30,20 @@ endOffset                  // a Number representing where in the node the range 
 text                       // a String value of the node
 ```
 
-## Methods
-```
+## Methods 
+```javascript
+// primary methods
+.setSelection(node[, start = 0][, end = 0])
 .selectionRange([window][, document])
 .rangeContent(range)
+
+// secondary methods
 .isEditable(node)
 .isTextElement(node)
 .isTextNode(node)
-.setNodeValue(node, string)
-.getNodeValue(node)
+.setValue(node, string)
+.getValue(node)
 ```
+
+## Browser compatibility
+IE9+, Safari, Chrome, Firefox
