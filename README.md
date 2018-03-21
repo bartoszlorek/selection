@@ -11,6 +11,7 @@ content.forEach(item => ...)
 ### range `Object`
 
 ```javascript
+editable                   // Boolean indicating whether the common ancestor is an editable element
 collapsed                  // Boolean indicating whether the range's start and end are the same position
 commonAncestorContainer    // the deepest node that contains the start and end nodes
 startContainer             // the node within which the range starts
@@ -30,13 +31,14 @@ text                       // a String value of the node
 
 ## Methods 
 ```javascript
-// primary methods
+// core methods
 .setSelection(node[, start = 0][, end = 0])
 .selectionRange([window][, document])
 .rangeContent(range)
 
-// secondary methods
+// helpers
 .isEditable(node)
+.isEditableContent(node)
 .isTextElement(node)
 .isTextNode(node)
 .setValue(node, string)
@@ -44,4 +46,4 @@ text                       // a String value of the node
 ```
 
 ## Browser compatibility
-IE9+, Safari, Chrome, Firefox
+IE9+, Firefox, Chrome, Safari, Opera
