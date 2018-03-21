@@ -45,5 +45,28 @@ text                       // a String value of the node
 .getValue(node)
 ```
 
+## Examples 
+```javascript
+import { selectionRange, rangeContent, setValue } from 'selection.min'
+
+const range = selectionRange()
+const content = rangeContent(range)
+
+// get selected text
+let text = content.reduce((value, item) => {
+    let { text, startOffset, endOffset } = item
+    return value + text.slice(startOffset, endOffset)
+}, '')
+
+// change selected text
+content.forEach(({ node, text, startOffset, endOffset }) => {
+    let value =
+        text.substring(0, startOffset) +
+        text.slice(startOffset, endOffset).toUpperCase() +
+        text.substring(endOffset)
+    setValue(node, value)
+})
+```
+
 ## Browser compatibility
 IE9+, Firefox, Chrome, Safari, Opera
