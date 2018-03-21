@@ -3,6 +3,7 @@ import trimToTextNodes from './.internal/trim-to-text-nodes'
 import getWindowIframe from './.internal/get-window-iframe'
 import getDocumentIframe from './.internal/get-document-iframe'
 import getTagName from './.internal/get-tag-name'
+import createRange from './.internal/create-range'
 
 function selectionRange(win = window, doc = document) {
     let element = doc.activeElement
@@ -14,14 +15,12 @@ function selectionRange(win = window, doc = document) {
     if (tagName === 'textarea' || tagName === 'input') {
         try {
             let { selectionStart, selectionEnd } = element
-            return {
-                commonAncestorContainer: element,
-                collapsed: selectionStart === selectionEnd,
+            return createRange({
                 startContainer: element,
                 startOffset: selectionStart,
                 endContainer: element,
                 endOffset: selectionEnd
-            }
+            })
         } catch (e) {
             return null
         }
@@ -38,7 +37,6 @@ function selectionRange(win = window, doc = document) {
             return null
         }
     }
-    
 
     let range = baseSelectionRange(win, doc)
     if (range !== null) {

@@ -1,9 +1,14 @@
 import { nextNode, prevNode } from '../node-sibling'
 import isTextNode from '../is-text-node'
-import getCommonAncestor from './get-common-ancestor'
+import createRange from './create-range'
 
 function trimToTextNodes(range) {
-    let { startContainer, startOffset, endContainer, endOffset } = range
+    let {
+        startContainer,
+        startOffset,
+        endContainer,
+        endOffset
+    } = range
 
     if (!isTextNode(startContainer)) {
         startContainer = nextNode(startContainer, 3)
@@ -13,21 +18,13 @@ function trimToTextNodes(range) {
         endContainer = prevNode(endContainer, 3) || startContainer
         endOffset = endContainer.nodeValue.length
     }
-    
-    return {
-        commonAncestorContainer: getCommonAncestor(
-            startContainer,
-            endContainer
-        ),
-        collapsed: (
-            startContainer === endContainer &&
-            startOffset === endOffset
-        ),
+
+    return createRange({
         startContainer,
         startOffset,
         endContainer,
         endOffset
-    }
+    })
 }
 
 export default trimToTextNodes
