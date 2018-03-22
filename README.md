@@ -26,23 +26,15 @@ endOffset                  // a Number representing where in the endContainer th
 node                       // the node in the range
 startOffset                // a Number representing where in the node the range starts
 endOffset                  // a Number representing where in the node the range ends
-text                       // a String value of the node
+text                       // [getter] a String value of the node
+selectedText               // [getter|setter] a substring of text between offsets
 ```
 
 ## Methods 
 ```javascript
-// core methods
 .setSelection(node[, start = 0][, end = 0])
 .selectionRange([window][, document])
 .rangeContent(range)
-
-// helpers
-.isEditable(node)
-.isEditableContent(node)
-.isTextElement(node)
-.isTextNode(node)
-.setValue(node, string)
-.getValue(node)
 ```
 
 ## Examples 
@@ -53,19 +45,10 @@ const range = selectionRange()
 const content = rangeContent(range)
 
 // get selected text
-let text = content.reduce((value, item) => {
-    let { text, startOffset, endOffset } = item
-    return value + text.slice(startOffset, endOffset)
-}, '')
+let text = content.reduce((value, item) => value + item.selectedText, '')
 
 // change selected text
-content.forEach(({ node, text, startOffset, endOffset }) => {
-    let value =
-        text.substring(0, startOffset) +
-        text.slice(startOffset, endOffset).toUpperCase() +
-        text.substring(endOffset)
-    setValue(node, value)
-})
+content.forEach(item => item.selectedText = item.selectedText.toUpperCase())
 ```
 
 ## Browser compatibility
