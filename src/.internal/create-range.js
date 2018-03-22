@@ -1,5 +1,5 @@
 import getCommonAncestor from './get-common-ancestor'
-import isEditable from '../is-editable'
+import isEditable from '../.utils/is-editable'
 
 function createRange(spec) {
     if (spec == null) {

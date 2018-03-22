@@ -1,5 +1,5 @@
-import { nextNode, prevNode } from '../node-sibling'
-import isTextNode from '../is-text-node'
+import { nextNode, prevNode } from './node-sibling'
+import isTextNode from '../.utils/is-text-node'
 import createRange from './create-range'
 
 function trimToTextNodes(range) {

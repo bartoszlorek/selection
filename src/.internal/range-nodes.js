@@ -1,5 +1,5 @@
 import { nextNode } from './node-sibling'
-import isTextNode from './is-text-node'
+import isTextNode from '../.utils/is-text-node'
 
 function rangeNodes(range) {
     let nodes = [],

@@ -7,9 +7,7 @@ function run() {
     }
     var container = range.commonAncestorContainer
     //var result = selection.setSelection(container, 4, 50)
-    console.log(container)
-
-    return
+    //console.log(container)
 
     if (!range.editable) {
         return
@@ -19,25 +17,13 @@ function run() {
     console.log(content)
 
     // get selected text
-    var text = content.reduce((value, item) => {
-        var { text, startOffset, endOffset } = item
-        return value + text.slice(startOffset, endOffset)
-    }, '')
-
+    var text = content.reduce((value, item) =>
+        value + item.selectedText, '')
     console.log(text)
 
     // change selected text
-    var { setValue } = selection
-    content.forEach(item => {
-        var { node, text, startOffset, endOffset } = item
-
-        var value =
-            text.substring(0, startOffset) +
-            text.slice(startOffset, endOffset).toUpperCase() +
-            text.substring(endOffset)
-
-        setValue(node, value)
-    })
+    content.forEach(item => item.selectedText =
+        item.selectedText.toUpperCase())
 }
 
 setTimeout(run, 2000)

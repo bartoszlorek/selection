@@ -1,10 +1,10 @@
-import isTextNode from './is-text-node'
-import isTextElement from './is-text-element'
+import isTextElement from '../.utils/is-text-element'
+import isTextNode from '../.utils/is-text-node'
 import {
     setNativeValue,
     setNativeNodeValue,
     setNativeTextContent
-} from './.internal/set-native'
+} from '../.utils/set-native'
 
 function setValue(node, value) {
     if (typeof value !== 'string') {

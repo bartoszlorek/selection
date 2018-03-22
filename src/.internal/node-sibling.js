@@ -1,5 +1,5 @@
-const nextNode = checkType(getNode('nextSibling'))
-const prevNode = checkType(getNode('previousSibling'))
+const nextNode = checkNodeType(getNode('nextSibling'))
+const prevNode = checkNodeType(getNode('previousSibling'))
 
 export {
     nextNode,
@@ -25,7 +25,7 @@ function getNode(direction) {
     }
 }
 
-function checkType(func) {
+function checkNodeType(func) {
     return (node, type) => {
         node = func(node)
 
