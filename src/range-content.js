@@ -1,5 +1,6 @@
-import rangeNodes from './range-nodes'
-import { getValue } from './node-value'
+import { getValue } from './.internal/node-value'
+import rangeNodes from './.internal/range-nodes'
+import createContentItem from './.internal/create-content-item'
 
 function rangeContent(range) {
     return rangeNodes(range).map((node, index, nodes) => {
@@ -13,12 +14,11 @@ function rangeContent(range) {
         if (index === nodes.length - 1) {
             endOffset = range.endOffset
         }
-        return {
+        return createContentItem({
             node,
             startOffset,
-            endOffset,
-            text
-        }
+            endOffset
+        })
     })
 }
 
