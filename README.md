@@ -40,7 +40,7 @@ selectedText               // [getter|setter] a substring of the text between of
 
 ## Examples 
 ```javascript
-import { selectionRange, rangeContent, setValue } from 'selection.min'
+import { selectionRange, rangeContent } from 'selection.min'
 
 const range = selectionRange()
 const content = rangeContent(range)
