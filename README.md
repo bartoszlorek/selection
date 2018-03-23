@@ -27,7 +27,7 @@ node                       // the node in the range
 startOffset                // a Number representing where in the node the range starts
 endOffset                  // a Number representing where in the node the range ends
 text                       // [getter] a String value of the node
-selectedText               // [getter|setter] a substring of text between offsets
+selectedText               // [getter|setter] a substring of the text between offsets
 ```
 **Note:** text elements like an `input` or a `textarea` generate a single content item. However, the `contentEditable` or a non-editable elements can produce more than one item. It keeps the structure of document while editing the text.
 
