@@ -34,7 +34,7 @@ selectedText               // [getter|setter] a substring of the text between of
 ## Methods 
 ```javascript
 .setSelection(node[, start = 0][, end = 0])
-.selectionRange([window][, document])
+.selectionRange([document])
 .rangeContent(range)
 ```
 
