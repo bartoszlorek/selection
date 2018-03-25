@@ -1,5 +1,5 @@
-import getWindow from './.internal/get-window'
-import getDocument from './.internal/get-document'
+import nodeWindow from './.internal/node-window'
+import nodeDocument from './.internal/node-document'
 import getTagName from './.internal/get-tag-name'
 import getChildBy from './.utils/get-child-by'
 
@@ -29,8 +29,8 @@ function setSelection(node, start, end) {
     }
 
     if (tagName === 'node') {
-        let selection = getWindow(node).getSelection(),
-            range = getDocument(node).createRange(),
+        let selection = nodeWindow(node).getSelection(),
+            range = nodeDocument(node).createRange(),
             length = node.nodeValue.length
 
         range.setStart(node, Math.min(start, length))

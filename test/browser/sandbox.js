@@ -2,17 +2,9 @@ function run() {
     var range = selection.selectionRange()
     console.log(range)
 
-    if (range === null) {
+    if (range === null || !range.editable) {
         return
     }
-    var container = range.commonAncestorContainer
-    var result = selection.setSelection(container, 5, 10)
-    //console.log(container)
-
-    if (!range.editable) {
-        return
-    }
-
     var content = selection.rangeContent(range)
     console.log(content)
 
@@ -26,6 +18,13 @@ function run() {
     content.forEach(function(item) {
         item.selectedText = item.selectedText.toUpperCase()
     })
+
+    // reselection
+    var container = range.commonAncestorContainer
+    selection.setSelection(container,
+        range.startOffset,
+        range.endOffset
+    )
 }
 
 setTimeout(run, 2000)

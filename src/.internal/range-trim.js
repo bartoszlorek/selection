@@ -2,7 +2,7 @@ import { nextNode, prevNode } from './node-sibling'
 import isTextNode from '../.utils/is-text-node'
 import createRange from './create-range'
 
-function trimToTextNodes(range) {
+function rangeTrim(range) {
     let {
         startContainer,
         startOffset,
@@ -27,4 +27,4 @@ function trimToTextNodes(range) {
     })
 }
 
-export default trimToTextNodes
+export default rangeTrim
