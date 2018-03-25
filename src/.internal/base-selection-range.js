@@ -5,16 +5,7 @@ function baseSelectionRange(win, doc) {
     if (win.getSelection !== undefined) {
         let selection = win.getSelection()
         if (selection.rangeCount > 0) {
-            let range = selection.getRangeAt(0)
-
-            return createRange({
-                commonAncestorContainer: range.commonAncestorContainer,
-                collapsed: range.collapsed,
-                startContainer: range.startContainer,
-                startOffset: range.startOffset,
-                endContainer: range.endContainer,
-                endOffset: range.endOffset
-            })
+            return createRange(selection.getRangeAt(0))
         }
     }
 
