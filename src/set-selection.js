@@ -36,6 +36,7 @@ function baseElementSelection(elem, start, end) {
 
 function setSelection(node, start, end) {
     let endNode = null
+
     if (Array.isArray(node)) {
         endNode = node[node.length - 1]
         node = node[0]
