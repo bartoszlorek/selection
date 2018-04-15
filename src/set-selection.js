@@ -7,9 +7,41 @@ const childWithContent = getChildBy(
     e => e.textContent && e.textContent.trim() !== ''
 )
 
+function baseNodeSelection(startNode, endNode, start, end) {
+    if (startNode == null) {
+        return
+    }
+    if (endNode == null) {
+        endNode = startNode
+    }
+    start = Math.min(start, startNode.nodeValue.length)
+    end = Math.min(end, endNode.nodeValue.length)
+
+    let selection = nodeWindow(startNode).getSelection(),
+        range = nodeDocument(startNode).createRange()
+
+    range.setStart(startNode, start)
+    range.setEnd(endNode, end)
+    selection.removeAllRanges()
+    selection.addRange(range)
+}
+
+function baseElementSelection(elem, start, end) {
+    let length = elem.value.length
+    elem.setSelectionRange(
+        Math.min(start, length),
+        Math.min(end, length)
+    )
+}
+
 function setSelection(node, start, end) {
+    let endNode = null
+    if (Array.isArray(node)) {
+        endNode = node[node.length - 1]
+        node = node[0]
+    }
     if (node == null) {
-        return false
+        return
     }
     if (start == null || start < 0) {
         start = 0
@@ -18,39 +50,21 @@ function setSelection(node, start, end) {
         end = start
     }
 
-    let endNode = node
-    if (Array.isArray(node)) {
-        endNode = node[node.length - 1]
-        node = node[0]
-        if (node == null || endNode == null) {
-            return false
-        }
-    }
-
     let tagName = getTagName(node)
     if (tagName === 'textarea' || tagName === 'input') {
-        let length = node.value.length
-        node.setSelectionRange(
-            Math.min(start, length),
-            Math.min(end, length)
-        )
-        return true
+        return baseElementSelection(node, start, end)
     }
 
     if (tagName === 'node') {
-        let selection = nodeWindow(node).getSelection(),
-            range = nodeDocument(node).createRange()
-
-        range.setStart(node, Math.min(start, node.nodeValue.length))
-        range.setEnd(endNode, Math.min(end, endNode.nodeValue.length))
-        selection.removeAllRanges()
-        selection.addRange(range)
-        return true
+        return baseNodeSelection(node, endNode, start, end)
     }
 
-    node = childWithContent(node)
-    endNode = endNode !== node ? childWithContent(endNode) : node
-    return setSelection([node, endNode], start, end)
+    baseNodeSelection(
+        childWithContent(node),
+        childWithContent(endNode),
+        start,
+        end
+    )
 }
 
 export default setSelection
