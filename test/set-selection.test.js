@@ -18,6 +18,14 @@ const createGlobals = global => {
 }
 
 describe('set-selection.js', () => {
+    it('should handle undefined nodes', () => {
+        expect(() => {
+            setSelection()
+            setSelection(null)
+            setSelection([])
+        }).not.toThrow()
+    })
+
     it('should select input', () => {
         document.body.innerHTML =
             '<input type="text" id="input" value="the quick brown fox">'
@@ -40,7 +48,7 @@ describe('set-selection.js', () => {
         expect(textarea.selectionEnd).toEqual(15)
     })
 
-    it('should select element value', () => {
+    it('should select single element', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML = '<p id="element">the quick brown fox</p>'
@@ -52,7 +60,19 @@ describe('set-selection.js', () => {
         expect(addRange).lastCalledWith(range)
     })
 
-    it('should select multiple elements value', () => {
+    it('should select single element in range', () => {
+        const { addRange, range } = createGlobals(global)
+
+        document.body.innerHTML = '<p id="element">the quick brown fox</p>'
+        let elem = document.getElementById('element')
+
+        setSelection([elem], 4, 15)
+        expect(range.setStart).lastCalledWith(elem.firstChild, 4)
+        expect(range.setEnd).lastCalledWith(elem.firstChild, 15)
+        expect(addRange).lastCalledWith(range)
+    })
+
+    it('should select range of elements', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML =
