@@ -18,6 +18,15 @@ function setSelection(node, start, end) {
         end = start
     }
 
+    let endNode = node
+    if (Array.isArray(node)) {
+        endNode = node[node.length - 1]
+        node = node[0]
+        if (node == null || endNode == null) {
+            return false
+        }
+    }
+
     let tagName = getTagName(node)
     if (tagName === 'textarea' || tagName === 'input') {
         let length = node.value.length
@@ -30,21 +39,18 @@ function setSelection(node, start, end) {
 
     if (tagName === 'node') {
         let selection = nodeWindow(node).getSelection(),
-            range = nodeDocument(node).createRange(),
-            length = node.nodeValue.length
+            range = nodeDocument(node).createRange()
 
-        range.setStart(node, Math.min(start, length))
-        range.setEnd(node, Math.min(end, length))
+        range.setStart(node, Math.min(start, node.nodeValue.length))
+        range.setEnd(endNode, Math.min(end, endNode.nodeValue.length))
         selection.removeAllRanges()
         selection.addRange(range)
         return true
     }
 
-    return setSelection(
-        childWithContent(node),
-        start,
-        end
-    )
+    node = childWithContent(node)
+    endNode = endNode !== node ? childWithContent(endNode) : node
+    return setSelection([node, endNode], start, end)
 }
 
 export default setSelection
