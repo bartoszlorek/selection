@@ -1,4 +1,5 @@
 import setSelection from '../src/set-selection'
+import createRange from '../src/.internal/create-range'
 
 const createGlobals = global => {
     const addRange = jest.fn()
@@ -60,7 +61,7 @@ describe('set-selection.js', () => {
         expect(addRange).lastCalledWith(range)
     })
 
-    it('should select single element in range', () => {
+    it('should select single element from array', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML = '<p id="element">the quick brown fox</p>'
@@ -72,7 +73,7 @@ describe('set-selection.js', () => {
         expect(addRange).lastCalledWith(range)
     })
 
-    it('should select range of elements', () => {
+    it('should select multiple elements from array', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML =
@@ -84,6 +85,49 @@ describe('set-selection.js', () => {
         setSelection([elemA, elemB], 4, 15)
         expect(range.setStart).lastCalledWith(elemA.firstChild, 4)
         expect(range.setEnd).lastCalledWith(elemB.firstChild, 15)
+        expect(addRange).lastCalledWith(range)
+    })
+
+    it('should select single element from range', () => {
+        const { addRange, range } = createGlobals(global)
+
+        document.body.innerHTML = '<p id="element">the quick brown fox</p>'
+
+        let element = document.getElementById('element'),
+            elementNode = element.firstChild
+
+        let rangeObject = createRange({
+            startContainer: elementNode,
+            endContainer: elementNode,
+            startOffset: 4,
+            endOffset: 15
+        })
+
+        setSelection(rangeObject)
+        expect(range.setStart).lastCalledWith(elementNode, 4)
+        expect(range.setEnd).lastCalledWith(elementNode, 15)
+        expect(addRange).lastCalledWith(range)
+    })
+
+    it('should select elements from range', () => {
+        const { addRange, range } = createGlobals(global)
+
+        document.body.innerHTML =
+            '<p id="element-a">the quick brown fox</p>' +
+            '<p id="element-b">jumps over the lazy dog</p>'
+
+        let rangeObject = createRange({
+            startContainer: document.getElementById('element-a'),
+            endContainer: document.getElementById('element-b'),
+            startOffset: 4,
+            endOffset: 15
+        })
+        let startNode = rangeObject.startContainer.firstChild,
+            endNode = rangeObject.endContainer.firstChild
+
+        setSelection(rangeObject)
+        expect(range.setStart).lastCalledWith(startNode, 4)
+        expect(range.setEnd).lastCalledWith(endNode, 15)
         expect(addRange).lastCalledWith(range)
     })
 })

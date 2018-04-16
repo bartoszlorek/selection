@@ -2,6 +2,8 @@ import nodeWindow from './.internal/node-window'
 import nodeDocument from './.internal/node-document'
 import getTagName from './.internal/get-tag-name'
 import getChildBy from './.utils/get-child-by'
+import isNode from './.utils/is-node'
+import isRange from './.utils/is-range'
 
 const childWithContent = getChildBy(
     e => e.textContent && e.textContent.trim() !== ''
@@ -14,12 +16,17 @@ function baseNodeSelection(startNode, endNode, start, end) {
     if (endNode == null) {
         endNode = startNode
     }
-    start = Math.min(start, startNode.nodeValue.length)
-    end = Math.min(end, endNode.nodeValue.length)
-
     let selection = nodeWindow(startNode).getSelection(),
-        range = nodeDocument(startNode).createRange()
+        range = nodeDocument(startNode).createRange(),
+        startLength = startNode.nodeValue.length,
+        endLength = endNode.nodeValue.length
 
+    if (start > startLength) {
+        start = startLength
+    }
+    if (end > endLength) {
+        end = endLength
+    }
     range.setStart(startNode, start)
     range.setEnd(endNode, end)
     selection.removeAllRanges()
@@ -29,8 +36,8 @@ function baseNodeSelection(startNode, endNode, start, end) {
 function baseElementSelection(elem, start, end) {
     let length = elem.value.length
     elem.setSelectionRange(
-        Math.min(start, length),
-        Math.min(end, length)
+        start < length ? start : length,
+        end < length ? end : length
     )
 }
 
@@ -56,16 +63,19 @@ function setSelection(node, start, end) {
         return baseElementSelection(node, start, end)
     }
 
-    if (tagName === 'node') {
-        return baseNodeSelection(node, endNode, start, end)
+    if (isRange(node)) {
+        start = node.startOffset
+        end = node.endOffset
+        endNode = node.endContainer
+        node = node.startContainer
     }
-
-    baseNodeSelection(
-        childWithContent(node),
-        childWithContent(endNode),
-        start,
-        end
-    )
+    if (!isNode(node)) {
+        node = childWithContent(node)
+    }
+    if (endNode != null && !isNode(endNode)) {
+        endNode = childWithContent(endNode)
+    }
+    return baseNodeSelection(node, endNode, start, end)
 }
 
 export default setSelection
