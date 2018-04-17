@@ -1,6 +1,6 @@
 # selection
 ```javascript
-import { selectionRange, rangeContent } from 'selection.min'
+import { selectionRange, rangeContent } from 'selection'
 
 const range = selectionRange()
 const content = rangeContent(range)
@@ -33,14 +33,18 @@ selectedText               // [getter|setter] a substring of the text between of
 
 ## Methods 
 ```javascript
-.setSelection(node[, start = 0][, end = 0])
+// from a single Element/Node, Array of them or Range
+.setSelection(node [, start = 0][, end = 0])
+.setSelection(nodes[, start = 0][, end = 0])
+.setSelection(Range)
+
 .selectionRange([document])
 .rangeContent(range)
 ```
 
 ## Examples 
 ```javascript
-import { selectionRange, rangeContent } from 'selection.min'
+import { selectionRange, rangeContent } from 'selection'
 
 const range = selectionRange()
 const content = rangeContent(range)
