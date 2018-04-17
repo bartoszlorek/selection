@@ -1,4 +1,4 @@
-import { nextNode, prevNode } from '../src/node-sibling'
+import { nextNode, prevNode } from '../src/.internal/node-sibling'
 
 describe('node-sibling.js', () => {
     document.body.innerHTML =

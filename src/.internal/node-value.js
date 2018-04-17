@@ -7,8 +7,8 @@ import {
 } from '../.utils/set-native'
 
 function setValue(node, value) {
-    if (typeof value !== 'string') {
-        return false
+    if (node == null || value == null) {
+        return
     }
     if (isTextElement(node)) {
         return setNativeValue(node, value)
@@ -20,13 +20,16 @@ function setValue(node, value) {
 }
 
 function getValue(node) {
+    if (node == null) {
+        return ''
+    }
     if (isTextElement(node)) {
         return node.value
     }
     if (isTextNode(node)) {
         return node.nodeValue
     }
-    return node.textContent
+    return node.textContent || ''
 }
 
 export {

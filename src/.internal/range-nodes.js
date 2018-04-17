@@ -2,16 +2,12 @@ import { nextNode } from './node-sibling'
 import isTextNode from '../.utils/is-text-node'
 
 function rangeNodes(range) {
-    let nodes = [],
-        node,
-        endNode
-
-    if (range) {
-        node = range.startContainer
-        endNode = range.endContainer
-    } else {
-        return nodes
+    if (range == null) {
+        return []
     }
+    let nodes = [],
+        node = range.startContainer,
+        endNode = range.endContainer
 
     nodes.push(node)
     if (node === endNode) {

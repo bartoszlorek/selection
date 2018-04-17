@@ -4,15 +4,13 @@ import createContentItem from './.internal/create-content-item'
 
 function rangeContent(range) {
     return rangeNodes(range).map((node, index, nodes) => {
-        let text = getValue(node),
-            startOffset = 0,
-            endOffset = text.length
+        let { startOffset, endOffset } = range
 
-        if (index === 0) {
-            startOffset = range.startOffset
+        if (index > 0) {
+            startOffset = 0
         }
-        if (index === nodes.length - 1) {
-            endOffset = range.endOffset
+        if (index < nodes.length - 1) {
+            endOffset = getValue(node).length
         }
         return createContentItem({
             node,
