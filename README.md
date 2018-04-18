@@ -36,7 +36,7 @@ selectedText               // [getter|setter] a substring of the text between of
 // from a single Element/Node, Array of them or Range
 .setSelection(node [, start = 0][, end = 0])
 .setSelection(nodes[, start = 0][, end = 0])
-.setSelection(Range)
+.setSelection(range)
 
 .selectionRange([document])
 .rangeContent(range)
