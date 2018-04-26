@@ -18,7 +18,7 @@ const createGlobals = global => {
     }
 }
 
-describe('set-selection.js', () => {
+describe('handle falsy', () => {
     it('should handle undefined nodes', () => {
         expect(() => {
             setSelection()
@@ -26,7 +26,9 @@ describe('set-selection.js', () => {
             setSelection([])
         }).not.toThrow()
     })
+})
 
+describe('single node', () => {
     it('should select input', () => {
         document.body.innerHTML =
             '<input type="text" id="input" value="the quick brown fox">'
@@ -60,7 +62,9 @@ describe('set-selection.js', () => {
         expect(range.setEnd).lastCalledWith(elem.firstChild, 15)
         expect(addRange).lastCalledWith(range)
     })
+})
 
+describe('array of nodes', () => {
     it('should select single element from array', () => {
         const { addRange, range } = createGlobals(global)
 
@@ -87,8 +91,30 @@ describe('set-selection.js', () => {
         expect(range.setEnd).lastCalledWith(elemB.firstChild, 15)
         expect(addRange).lastCalledWith(range)
     })
+})
 
-    it('should select single element from range', () => {
+describe('selection range', () => {
+    it('should select text elements from range', () => {
+        const { addRange, range } = createGlobals(global)
+
+        document.body.innerHTML =
+            '<input type="text" id="input" value="the quick brown fox">'
+
+        let input = document.getElementById('input')
+
+        let rangeObject = createRange({
+            startContainer: input,
+            endContainer: input,
+            startOffset: 4,
+            endOffset: 15
+        })
+
+        setSelection(rangeObject)
+        expect(input.selectionStart).toEqual(4)
+        expect(input.selectionEnd).toEqual(15)
+    })
+
+    it('should select single node from range', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML = '<p id="element">the quick brown fox</p>'
@@ -109,7 +135,7 @@ describe('set-selection.js', () => {
         expect(addRange).lastCalledWith(range)
     })
 
-    it('should select elements from range', () => {
+    it('should select multiple nodes from range', () => {
         const { addRange, range } = createGlobals(global)
 
         document.body.innerHTML =

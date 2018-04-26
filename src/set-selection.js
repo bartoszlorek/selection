@@ -58,17 +58,18 @@ function setSelection(node, start, end) {
         end = start
     }
 
-    let tagName = getTagName(node)
-    if (tagName === 'textarea' || tagName === 'input') {
-        return baseElementSelection(node, start, end)
-    }
-
     if (isRange(node)) {
         start = node.startOffset
         end = node.endOffset
         endNode = node.endContainer
         node = node.startContainer
     }
+
+    let tagName = getTagName(node)
+    if (tagName === 'textarea' || tagName === 'input') {
+        return baseElementSelection(node, start, end)
+    }
+
     return baseNodeSelection(
         closestNode(node),
         closestNode(endNode),
