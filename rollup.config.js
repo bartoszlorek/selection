@@ -3,39 +3,81 @@ import commonjs from 'rollup-plugin-commonjs'
 import uglify from 'rollup-plugin-uglify'
 import babel from 'rollup-plugin-babel'
 
-export default {
-    entry: 'src/index.js',
-    output: [
-        {
-            file: './dist/selection.umd.js',
-            format: 'umd',
-            name: 'selection'
-        },
-        {
-            file: './dist/selection.min.js',
-            format: 'cjs'
-        }
-    ],
+const ENTRY = 'src/index.js'
+const UMD_NAME = 'selection'
+const FILENAME = 'selection'
+const EXTERNAL = []
+
+const uglifyConfig = {
+    compress: {
+        warnings: false,
+        drop_console: true,
+        drop_debugger: true,
+        reduce_funcs: false
+    },
+    mangle: {
+        toplevel: true
+    }
+}
+
+const babelConfig = {
+    babelrc: false,
+    exclude: 'node_modules/**',
+    presets: [['env', { modules: false }]],
+    plugins: ['external-helpers']
+}
+
+const makeUglify = output => ({
+    entry: ENTRY,
+    output,
     plugins: [
         resolve(),
         commonjs(),
-        uglify({
-            compress: {
-                warnings: false,
-                drop_console: true,
-                drop_debugger: true,
-                reduce_funcs: false
-            },
-            mangle: {
-                toplevel: true
-            }
-        }),
-        babel({
-            babelrc: false,
-            exclude: 'node_modules/**',
-            presets: [['env', { modules: false }]],
-            plugins: ['external-helpers']
-        })
+        uglify(uglifyConfig),
+        babel(babelConfig)
     ],
-    external: []
-}
+    external: EXTERNAL,
+    watch: { include: 'src/**' }
+})
+
+const makeBeautify = output => ({
+    entry: ENTRY,
+    output,
+    plugins: [
+        resolve(),
+        commonjs(),
+        babel(babelConfig)
+    ],
+    external: EXTERNAL,
+    watch: { include: 'src/**' }
+})
+
+const configs = (function() {
+    if (process.env.DEVELOPMENT) {
+        return [
+            makeBeautify({
+                file: `./dist/${FILENAME}.umd.js`,
+                format: 'umd',
+                name: UMD_NAME
+            })
+        ]
+    } else {
+        return [
+            makeBeautify({
+                file: `./dist/${FILENAME}.js`,
+                format: 'cjs'
+            }),
+            makeUglify({
+                file: `./dist/${FILENAME}.min.js`,
+                format: 'cjs'
+            }),
+            makeUglify({
+                file: `./dist/${FILENAME}.umd.js`,
+                format: 'umd',
+                name: UMD_NAME
+            })
+        ]
+    }
+})()
+
+export default configs
